@@ -49,23 +49,20 @@ const update = catchError(async(req, res) => {
     return res.json(result[1][0]);
 });
 
-const verifyUser = catchError(async (req, res) =>{
-    const {code} = req.params
-    const emailCode = await EmailCode.findOne({where: {code}})
+const verifyUser = catchError(async (req, res) => { // ---- users/verify/:code
+    const { code } = req.params
+    const emailCode = await EmailCode.findOne({ where: { code } })
+    
+    if(!emailCode) return res.sendStatus(401)
 
-    if (!emailCode) return res.sendStatus(401)
-
-    const user = await User-update(
+    const user = await User.update(
         {isVerified: true},
         {where: {id: emailCode.userId}, returning: true}
-            
-        )
-    
+    )
     if (user[0]===0) return res.sendStatus(404);
-    await emailCode.destroy
-
+    await emailCode.destroy()
     return res.json(user[1][0])
-})
+  })
 
 const login = catchError(async (req, res) => {
     const { email, password } = req.body
@@ -84,6 +81,11 @@ const login = catchError(async (req, res) => {
     return res.json({ user, token })
   })
 
+  const logged = catchError(async (req, res) => {
+    const user = req.user
+    return res.json(user)
+  })
+
   module.exports = {
     getAll,
     create,
@@ -91,5 +93,6 @@ const login = catchError(async (req, res) => {
     remove,
     update,
     verifyUser,
-    login
+    login,
+    logged
   }

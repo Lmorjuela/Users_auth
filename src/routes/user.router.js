@@ -1,5 +1,6 @@
-const { getAll, create, getOne, remove, update, verifyUser, login } = require('../controllers/user.controllers');
+const { getAll, create, getOne, remove, update, verifyUser, login, logged } = require('../controllers/user.controllers');
 const express = require('express');
+const { verifyJwt } = require('../utils/verify');
 
 const routerUser = express.Router();
 //Rutas estáticas
@@ -9,6 +10,10 @@ routerUser.route('/')
 
 routerUser.route('/login')
     .post(login)
+
+routerUser.route('/me')
+    .get(verifyJwt, logged)
+  
 
 //Rutas dinámicas
 routerUser.route('/verify/:code')

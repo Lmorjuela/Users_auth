@@ -3,7 +3,7 @@ const { sendEmail } = require("./sendEmail");
 const verifyAccount = (email, firstName, frontBaseUrl, code) => {
     sendEmail({
         to: email,
-        subject: '',
+        subject: 'Verificación de cuenta',
         html: `
         <div style="max-width: 500px; margin: 50px auto; background-color: #f8fafc; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); font-family: 'Arial', sans-serif; color: #333333;">
 
