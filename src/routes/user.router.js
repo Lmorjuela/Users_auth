@@ -1,4 +1,4 @@
-const { getAll, create, getOne, remove, update, verifyUser, login, logged } = require('../controllers/user.controllers');
+const { getAll, create, getOne, remove, update, verifyUser, login, logged, resetPassword, updatePassword } = require('../controllers/user.controllers');
 const express = require('express');
 const { verifyJwt } = require('../utils/verify');
 
@@ -13,11 +13,16 @@ routerUser.route('/login')
 
 routerUser.route('/me')
     .get(verifyJwt, logged)
-  
+
+routerUser.route('/reset_password')
+    .post(resetPassword)
 
 //Rutas dinámicas
 routerUser.route('/verify/:code')
     .get(verifyUser)
+
+    routerUser.route('/reset_password/:code')
+    .post(updatePassword) 
 
 routerUser.route('/:id')
     .get(verifyJwt, getOne)
